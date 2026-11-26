@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Compras</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ededed;
+            color: #333333;
+            padding-bottom: 80px;
+        }
+
+        /* Topo amarelo */
+        .container-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffe600;
+            color: #333333;
+            height: 56px;
+            width: 100%;
+        }
+
+        .container-menu p {
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        /* Barra de pesquisa e botão Filtrar */
+        .container-pesquisa {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .barra-pesquisa {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 20px;
+            background-color: #f5f5f5;
+            gap: 10px;
+        }
+
+        .barra-pesquisa input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .barra-pesquisa input::placeholder {
+            color: #bfbfbf;
+        }
+
+        .btn-filtrar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #3483fa;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        /* Área principal dos cards */
+        .conteudo {
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Estilo padrão dos cards brancos */
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* Card 1: +10 produtos esperam sua opinião */
+        .card-opiniao {
+            display: flex;
+            align-items: center;
+            padding: 18px 16px;
+            gap: 16px;
+        }
+
+        .icones-sobrepostos {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 82px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .circulo-icone {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid #eeeeee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .circulo-estrela {
+            position: absolute;
+            left: 34px;
+            z-index: 2;
+        }
+
+        .texto-opiniao p {
+            font-size: 15px;
+            color: #333333;
+            margin-bottom: 6px;
+        }
+
+        .texto-opiniao a {
+            color: #3483fa;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Card 2: Produto (25 de julho) */
+        .topo-produto {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        #data-de-entrega {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333333;
+            cursor: pointer;
+            padding: 2px 6px;
+            margin-left: -6px;
+            border-radius: 4px;
+            outline: none;
+            transition: background-color 0.2s;
+        }
+
+        #data-de-entrega:hover,
+        #data-de-entrega:focus {
+            background-color: #f0f4ff;
+            box-shadow: 0 0 0 1px #3483fa;
+        }
+
+        .link-comprar {
+            color: #3483fa;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .corpo-produto {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            gap: 16px;
+        }
+
+        #container-img-produto {
+            width: 74px;
+            height: 74px;
+            border-radius: 8px;
+            border: 1px solid #eeeeee;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 4px;
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        #container-img-produto:hover {
+            border-color: #3483fa;
+        }
+
+        #container-img-produto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .info-entrega {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .status-verde {
+            color: #00a650;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .previsao-entrega {
+            color: #333333;
+            font-size: 15px;
+        }
+
+        .previsao-entrega strong {
+            font-weight: 600;
+        }
+
+        .detalhe-envio {
+            color: #8c8c8c;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        /* Barra de Navegação Inferior */
+        .nav-inferior {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 62px;
+            background-color: #ffffff;
+            border-top: 1px solid #e6e6e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding-bottom: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #8c8c8c;
+            font-size: 11px;
+            gap: 4px;
+            flex: 1;
+            height: 100%;
+        }
+
+        .nav-item.ativo {
+            color: #3483fa;
+            font-weight: 500;
+        }
+
+        .icone-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-notificacao {
+            position: absolute;
+            top: -5px;
+            right: -9px;
+            background-color: #f23d4f;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            border: 1.5px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho Amarelo -->
+    <div class="container-menu">
+        <p>Minhas Compras</p>
+    </div>
+
+    <!-- Barra de Pesquisa + Filtrar -->
+    <div class="container-pesquisa">
+        <div class="barra-pesquisa">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Buscar">
+        </div>
+
+        <a href="#" class="btn-filtrar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3483fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <circle cx="9" cy="6" r="2.5" fill="#ffffff"></circle>
+                <line x1="4" y1="15" x2="20" y2="15"></line>
+                <circle cx="15" cy="15" r="2.5" fill="#ffffff"></circle>
+            </svg>
+            Filtrar
+        </a>
+    </div>
+
+    <div class="conteudo">
+        <!-- Card de Opinião -->
+        <div class="card card-opiniao">
+            <div class="icones-sobrepostos">
+                <div class="circulo-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" stroke-width="1.5">
+                        <line x1="4" y1="4" x2="20" y2="20"></line>
+                        <circle cx="17" cy="7" r="2"></circle>
+                    </svg>
+                </div>
+                <div class="circulo-icone circulo-estrela">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffe600" stroke="#333333" stroke-width="1.5" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="texto-opiniao">
+                <p>+10 produtos esperam sua opinião</p>
+                <a href="#">Opinar</a>
+            </div>
+        </div>
+
+        <!-- Card do Primeiro Produto -->
+        <div id="primeiro-produto" class="card">
+            <div class="topo-produto">
+                <!-- Clique em cima para editar o texto -->
+                <p id="data-de-entrega" contenteditable="true" title="Clique para editar a data">25 de julho</p>
+                <a href="#" class="link-comprar">Comprar novamente</a>
+            </div>
+
+            <div class="corpo-produto">
+                <!-- Input oculto para selecionar a imagem -->
+                <input type="file" id="input-foto-produto" accept="image/*" hidden>
+
+                <!-- Clique no quadrado para escolher uma foto -->
+                <div id="container-img-produto" title="Clique para adicionar uma foto">
+                    <span style="font-size: 8px; color: #388e3c; font-weight: bold;">Gel Nocauteador</span>
+                    <div style="display: flex; gap: 4px; margin: 4px 0;">
+                        <div style="width: 16px; height: 28px; background: #e8f5e9; border: 1px solid #4caf50; border-top: 5px solid #ef6c00; border-radius: 3px;"></div>
+                        <div style="width: 16px; height: 28px; background: #e8f5e9; border: 1px solid #4caf50; border-top: 5px solid #ef6c00; border-radius: 3px;"></div>
+                    </div>
+                    <span style="font-size: 7px; color: #388e3c; font-weight: bold;">Kit 2 Unidades</span>
+                </div>
+
+                <div class="info-entrega">
+                    <p class="status-verde">A caminho</p>
+                    <p class="previsao-entrega">Chega quinta-feira dia <strong>27</strong> de julho</p>
+                    <p class="detalhe-envio">O vendedor despachou o seu pacote.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Navegação Inferior -->
+    <nav class="nav-inferior">
+        <!-- Início -->
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 10.5L12 3l9 7.5"></path>
+                <path d="M5 9.5V20h5v-5h4v5h5V9.5"></path>
+            </svg>
+            <span>Início</span>
+        </a>
+
+        <!-- Favoritos -->
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span>Favoritos</span>
+        </a>
+
+        <!-- Minhas compras (Ativo) -->
+        <a href="#" class="nav-item ativo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3483fa" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8h12l1 12H5L6 8z"></path>
+                <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+            </svg>
+            <span>Minhas compras</span>
+        </a>
+
+        <!-- Notificações -->
+        <a href="#" class="nav-item">
+            <div class="icone-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="badge-notificacao">6</span>
+            </div>
+            <span>Notificações</span>
+        </a>
+
+        <!-- Mais -->
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="7" x2="20" y2="7"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+            <span>Mais</span>
+        </a>
+    </nav>
+
+    <script>
+        // 1. Upload da imagem ao clicar em #container-img-produto
+        const containerImg = document.getElementById('container-img-produto');
+        const inputFoto = document.getElementById('input-foto-produto');
+
+        containerImg.addEventListener('click', () => {
+            inputFoto.click();
+        });
+
+        inputFoto.addEventListener('change', (evento) => {
+            const arquivo = evento.target.files[0];
+            if (arquivo) {
+                const leitor = new FileReader();
+                leitor.onload = (e) => {
+                    containerImg.style.padding = '0';
+                    containerImg.innerHTML = `<img src="${e.target.result}" alt="Foto do produto">`;
+                };
+                leitor.readAsDataURL(arquivo);
+            }
+        });
+
+        // 2. Finalizar edição da data ao apertar Enter ou deixar o campo vazio
+        const dataEntrega = document.getElementById('data-de-entrega');
+
+        dataEntrega.addEventListener('keydown', (evento) => {
+            if (evento.key === 'Enter') {
+                evento.preventDefault();
+                dataEntrega.blur();
+            }
+        });
+
+        dataEntrega.addEventListener('blur', () => {
+            if (dataEntrega.textContent.trim() === '') {
+                dataEntrega.textContent = '25 de julho';
+            }
+        });
+    </script>
+
+</body>
+</html>
